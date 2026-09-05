@@ -10,6 +10,7 @@ backend/app/routers/__pycache__/
 *.pyc
 .env
 .env.local
+*.log
 frontend/node_modules/
 frontend/dist/
 .claude/launch.json
