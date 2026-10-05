@@ -85,4 +85,20 @@ for model in TABLES_IN_ORDER:
 
 sqlite_db.close()
 pg_db.close()
+
+# Les lignes ont été copiées avec leurs id d'origine : il faut avancer les
+# compteurs d'auto-incrément Postgres, sinon le prochain INSERT réutilise un id existant.
+from sqlalchemy import text  # noqa: E402
+
+with pg_engine.begin() as conn:
+    for model in TABLES_IN_ORDER:
+        table = model.__tablename__
+        conn.execute(
+            text(
+                f"SELECT setval(pg_get_serial_sequence('{table}', 'id'), "
+                f"COALESCE((SELECT MAX(id) FROM {table}), 1), "
+                f"(SELECT MAX(id) FROM {table}) IS NOT NULL)"
+            )
+        )
+print("Compteurs d'identifiants remis à jour.")
 print(f"\nTerminé — {total} lignes transférées au total.")
