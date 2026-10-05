@@ -9,6 +9,8 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: AUTH_CODE
+        sync: false # ton code d'accès à 8 chiffres
       - key: DATABASE_URL
         sync: false # colle l'URL de connexion Supabase (Session pooler, port 5432) dans le dashboard Render
       - key: SUPABASE_URL

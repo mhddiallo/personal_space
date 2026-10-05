@@ -1,3 +1,4 @@
+import os
 import secrets
 import time
 
@@ -35,6 +36,10 @@ def _is_locked_out(key: str) -> bool:
 
 
 def get_auth_code() -> str:
+    # En prod (Render), le code vient de la variable d'environnement AUTH_CODE.
+    env_code = os.environ.get("AUTH_CODE", "").strip()
+    if env_code:
+        return env_code
     if CODE_FILE.exists():
         return CODE_FILE.read_text().strip()
     code = f"{secrets.randbelow(100_000_000):08d}"
