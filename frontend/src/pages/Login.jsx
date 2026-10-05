@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { authToken } from '../api/client'
+import { authToken, BASE } from '../api/client'
 
 export default function Login({ onSuccess }) {
   const [code, setCode] = useState('')
@@ -11,7 +11,7 @@ export default function Login({ onSuccess }) {
     setError('')
     setLoading(true)
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(`${BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code }),

@@ -1,6 +1,6 @@
 // En local : le proxy Vite redirige /api vers http://127.0.0.1:8000 (voir vite.config.js).
 // En prod (build Render) : VITE_API_BASE pointe vers l'URL complète du backend déployé.
-const BASE = import.meta.env.VITE_API_BASE || '/api'
+export const BASE = import.meta.env.VITE_API_BASE || '/api'
 const TOKEN_KEY = 'espace_auth_token'
 
 export const authToken = {
