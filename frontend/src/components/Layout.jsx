@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
 const GROUPS = [
   {
@@ -31,11 +32,87 @@ const GROUPS = [
 
 const ALL_ITEMS = GROUPS.flatMap((g) => g.items)
 
+// Pages les plus utilisées, épinglées dans la barre du bas sur téléphone.
+const PRIMARY_PATHS = ['/', '/objectifs', '/todo', '/journal']
+const PRIMARY_ITEMS = PRIMARY_PATHS.map((to) => ALL_ITEMS.find((i) => i.to === to))
+
+function NavGroups() {
+  return GROUPS.map((group) => (
+    <div className="sidebar-group" key={group.label}>
+      <div className="sidebar-group-label">{group.label}</div>
+      <div className="sidebar-nav">
+        {group.items.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+          >
+            <span className="nav-dot" />
+            <span>{item.label}</span>
+            <span className="nav-badge">{item.badge}</span>
+          </NavLink>
+        ))}
+      </div>
+    </div>
+  ))
+}
+
+function UserFooter({ onLogout }) {
+  return (
+    <div className="sidebar-footer">
+      <div className="sidebar-footer-avatar">M</div>
+      <div>
+        <div className="sidebar-footer-name">Mohamed</div>
+        <div className="sidebar-footer-meta">Dakar · 168h/sem</div>
+      </div>
+      <button type="button" className="sidebar-logout" onClick={onLogout} aria-label="Se déconnecter">⏻</button>
+    </div>
+  )
+}
+
 export default function Layout({ onLogout }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { pathname } = useLocation()
+
+  // Referme le panneau à chaque changement de page.
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
+  // Bloque le défilement de la page derrière le panneau, et ferme avec Échap.
+  useEffect(() => {
+    if (!menuOpen) return undefined
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKey = (e) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = previous
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [menuOpen])
+
+  const onPrimaryPage = PRIMARY_PATHS.includes(pathname)
+
   return (
     <div className="app-shell">
       <header className="topbar">
-        <span className="brand">Maison.</span>
+        <div className="topbar-brand">
+          <div className="topbar-brand-mark">M</div>
+          <span className="brand">Maison.</span>
+        </div>
+        <button
+          type="button"
+          className="topbar-menu-btn"
+          onClick={() => setMenuOpen(true)}
+          aria-label="Ouvrir le menu"
+          aria-expanded={menuOpen}
+        >
+          ☰
+        </button>
       </header>
 
       <nav className="sidebar">
@@ -46,43 +123,34 @@ export default function Layout({ onLogout }) {
             <div className="sidebar-brand-version">V. 2026</div>
           </div>
         </div>
+        <NavGroups />
+        <UserFooter onLogout={onLogout} />
+      </nav>
 
-        {GROUPS.map((group) => (
-          <div className="sidebar-group" key={group.label}>
-            <div className="sidebar-group-label">{group.label}</div>
-            <div className="sidebar-nav">
-              {group.items.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.end}
-                  className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
-                >
-                  <span className="nav-dot" />
-                  <span>{item.label}</span>
-                  <span className="nav-badge">{item.badge}</span>
-                </NavLink>
-              ))}
+      <div className={`drawer-backdrop${menuOpen ? ' open' : ''}`} onClick={() => setMenuOpen(false)} />
+      <aside className={`mobile-drawer${menuOpen ? ' open' : ''}`} aria-hidden={!menuOpen}>
+        <div className="drawer-header">
+          <div className="sidebar-brand">
+            <div className="sidebar-brand-mark">M</div>
+            <div>
+              <div className="sidebar-brand-name">Maison.</div>
+              <div className="sidebar-brand-version">V. 2026</div>
             </div>
           </div>
-        ))}
-
-        <div className="sidebar-footer">
-          <div className="sidebar-footer-avatar">M</div>
-          <div>
-            <div className="sidebar-footer-name">Mohamed</div>
-            <div className="sidebar-footer-meta">Dakar · 168h/sem</div>
-          </div>
-          <button type="button" className="sidebar-logout" onClick={onLogout} aria-label="Se déconnecter">⏻</button>
+          <button type="button" className="drawer-close" onClick={() => setMenuOpen(false)} aria-label="Fermer le menu">
+            ✕
+          </button>
         </div>
-      </nav>
+        <NavGroups />
+        <UserFooter onLogout={onLogout} />
+      </aside>
 
       <main className="content">
         <Outlet />
       </main>
 
       <nav className="bottom-nav">
-        {ALL_ITEMS.map((item) => (
+        {PRIMARY_ITEMS.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
@@ -93,6 +161,14 @@ export default function Layout({ onLogout }) {
             <span>{item.label}</span>
           </NavLink>
         ))}
+        <button
+          type="button"
+          className={`bottom-nav-link${onPrimaryPage ? '' : ' active'}`}
+          onClick={() => setMenuOpen(true)}
+        >
+          <span className="nav-icon">☰</span>
+          <span>Menu</span>
+        </button>
       </nav>
     </div>
   )
