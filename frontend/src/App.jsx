@@ -12,6 +12,7 @@ import Blueprint from './pages/Blueprint'
 import Todo from './pages/Todo'
 import Lecture from './pages/Lecture'
 import Nourriture from './pages/Nourriture'
+import Agenda from './pages/Agenda'
 import Login from './pages/Login'
 import { authToken } from './api/client'
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="/todo" element={<Todo />} />
         <Route path="/lecture" element={<Lecture />} />
         <Route path="/nourriture" element={<Nourriture />} />
+        <Route path="/agenda" element={<Agenda />} />
         <Route path="/calendrier" element={<Calendar168 />} />
         <Route path="/blueprint" element={<Blueprint />} />
         <Route

@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app import auth
 from app.database import Base, PHOTOS_DIR, engine
-from app.routers import blueprint, books, calendar, contacts, finances, food, goals, journal, todo, vocabulary
+from app.routers import blueprint, books, calendar, contacts, events, finances, food, goals, journal, todo, vocabulary
 
 Base.metadata.create_all(bind=engine)
 PHOTOS_DIR.mkdir(parents=True, exist_ok=True)
@@ -41,6 +41,7 @@ app.include_router(finances.router, dependencies=protected)
 app.include_router(todo.router, dependencies=protected)
 app.include_router(books.router, dependencies=protected)
 app.include_router(food.router, dependencies=protected)
+app.include_router(events.router, dependencies=protected)
 
 
 @app.get("/api/health")

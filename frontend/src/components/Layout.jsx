@@ -15,17 +15,18 @@ const GROUPS = [
     items: [
       { to: '/calendrier', label: '168 Heures', icon: '🗓️', badge: 4 },
       { to: '/blueprint', label: 'Blueprint', icon: '🧭', badge: 5 },
+      { to: '/agenda', label: 'Agenda', icon: '📅', badge: 6 },
     ],
   },
   {
     label: 'Vie',
     items: [
-      { to: '/finances', label: 'Finances', icon: '💰', badge: 6 },
-      { to: '/journal', label: 'Journal', icon: '📔', badge: 7 },
-      { to: '/vocabulaire', label: 'Vocabulaire', icon: '🔤', badge: 8 },
-      { to: '/lecture', label: 'Lecture', icon: '📚', badge: 9 },
-      { to: '/nourriture', label: 'Nourriture', icon: '🍽️', badge: 10 },
-      { to: '/repertoire', label: 'Répertoire', icon: '👥', badge: 11 },
+      { to: '/finances', label: 'Finances', icon: '💰', badge: 7 },
+      { to: '/journal', label: 'Journal', icon: '📔', badge: 8 },
+      { to: '/vocabulaire', label: 'Vocabulaire', icon: '🔤', badge: 9 },
+      { to: '/lecture', label: 'Lecture', icon: '📚', badge: 10 },
+      { to: '/nourriture', label: 'Nourriture', icon: '🍽️', badge: 11 },
+      { to: '/repertoire', label: 'Répertoire', icon: '👥', badge: 12 },
     ],
   },
 ]

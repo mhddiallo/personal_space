@@ -318,3 +318,19 @@ class MealSlot(Base):
     )
 
     food_item: Mapped["FoodItem"] = relationship(back_populates="meal_slots")
+
+
+# ---------- Agenda ----------
+
+
+class Event(Base):
+    __tablename__ = "events"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
+    start_time: Mapped[str | None] = mapped_column(String(5), nullable=True)  # "HH:MM"
+    end_time: Mapped[str | None] = mapped_column(String(5), nullable=True)  # "HH:MM"
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    color: Mapped[str] = mapped_column(String(20), nullable=False, default="#5c7f9c")
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utcnow)

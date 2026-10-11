@@ -1,6 +1,6 @@
 import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.models import BookStatus, ContactCategory, DayType, MealType, TransactionType, VocabularyType
 
@@ -449,3 +449,37 @@ class MealSlotOut(BaseModel):
     day_of_week: int
     meal_type: MealType
     food_item_id: int
+
+
+# ---------- Agenda ----------
+
+TIME_PATTERN = r"^([01]\d|2[0-3]):[0-5]\d$"
+
+
+class EventBase(BaseModel):
+    title: str
+    date: datetime.date
+    start_time: str | None = Field(default=None, pattern=TIME_PATTERN)
+    end_time: str | None = Field(default=None, pattern=TIME_PATTERN)
+    notes: str | None = None
+    color: str = "#5c7f9c"
+
+
+class EventCreate(EventBase):
+    pass
+
+
+class EventUpdate(BaseModel):
+    title: str | None = None
+    date: datetime.date | None = None
+    start_time: str | None = Field(default=None, pattern=TIME_PATTERN)
+    end_time: str | None = Field(default=None, pattern=TIME_PATTERN)
+    notes: str | None = None
+    color: str | None = None
+
+
+class EventOut(EventBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    created_at: datetime.datetime
