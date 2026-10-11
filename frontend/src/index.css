@@ -3509,3 +3509,59 @@ button.danger {
     font-size: 1.3rem;
   }
 }
+
+/* Agenda — filtres et éléments liés (anniversaires, contacts, to-do) */
+
+.agenda-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.agenda-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.agenda-filter.on {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--text-faint);
+}
+
+.agenda-filter-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.agenda-filter.on .agenda-filter-dot {
+  opacity: 1;
+}
+
+.agenda-item.done .agenda-item-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.agenda-item.done {
+  opacity: 0.65;
+}
+
+.agenda-day.overdue .agenda-day-label {
+  color: var(--danger);
+}
+
+.agenda-day.overdue .agenda-item {
+  border-color: var(--border);
+}

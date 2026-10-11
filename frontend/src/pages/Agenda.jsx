@@ -14,6 +14,19 @@ const PALETTE = [
   '#cf9a55', '#8bbdb8', '#9c8ba0', '#a9673f', '#1c1a16',
 ]
 const TASK_COLOR = '#7c9a5c'
+const BIRTHDAY_COLOR = '#d9a08d'
+const CONTACT_COLOR = '#8bbdb8'
+
+const FILTERS = [
+  { kind: 'event', label: 'Événements', color: PALETTE[0] },
+  { kind: 'task', label: 'To-Do', color: TASK_COLOR },
+  { kind: 'birthday', label: 'Anniversaires', color: BIRTHDAY_COLOR },
+  { kind: 'contact', label: 'Contacts', color: CONTACT_COLOR },
+]
+
+const KIND_TAG = { task: 'To-Do', birthday: 'Anniversaire', contact: 'Contact' }
+
+const KIND_ORDER ={ event: 0, contact: 1, birthday: 2, task: 3 }
 
 const emptyForm = { title: '', date: '', start_time: '', end_time: '', notes: '', color: PALETTE[0] }
 
@@ -53,12 +66,78 @@ function timeLabel(item) {
 function compareItems(a, b) {
   if (a.date !== b.date) return a.date < b.date ? -1 : 1
   if (a.start !== b.start) return (a.start || '') < (b.start || '') ? -1 : 1
-  return a.kind === b.kind ? 0 : a.kind === 'event' ? -1 : 1
+  return KIND_ORDER[a.kind] - KIND_ORDER[b.kind]
+}
+
+// Jour du mois limité à la longueur du mois (ex. 31 → 30 en avril).
+function clampedDate(year, monthIndex, day) {
+  const last = new Date(year, monthIndex + 1, 0).getDate()
+  return new Date(year, monthIndex, Math.min(day, last))
+}
+
+function fullName(contact) {
+  return [contact.first_name, contact.last_name]
+    .map((part) => (part || '').trim())
+    .filter(Boolean)
+    .join(' ')
+}
+
+// Anniversaires (chaque année) et rappels de contact (tous les 4 mois, même jour)
+// calculés pour les années demandées.
+function contactItems(contacts, years) {
+  const out = []
+  for (const c of contacts) {
+    const name = fullName(c)
+
+    if (c.birth_day && c.birth_month) {
+      for (const y of years) {
+        const date = toISO(clampedDate(y, c.birth_month - 1, c.birth_day))
+        out.push({
+          kind: 'birthday',
+          key: `b${c.id}-${date}`,
+          date,
+          start: '',
+          end: '',
+          title: `🎂 Anniversaire de ${name}`,
+          notes: c.birth_year ? `${y - c.birth_year} ans` : null,
+          color: BIRTHDAY_COLOR,
+          done: false,
+        })
+      }
+    }
+
+    if (c.contact_day && c.contact_month) {
+      const createdISO = c.created_at ? c.created_at.slice(0, 10) : ''
+      const lastContacted = c.last_contacted_at ? c.last_contacted_at.slice(0, 10) : ''
+      for (const y of years) {
+        for (let k = 0; k < 3; k++) {
+          const date = toISO(clampedDate(y, c.contact_month - 1 + 4 * k, c.contact_day))
+          if (date < createdISO) continue
+          const done = Boolean(lastContacted) && lastContacted >= date
+          out.push({
+            kind: 'contact',
+            key: `c${c.id}-${date}`,
+            contactId: c.id,
+            date,
+            start: '',
+            end: '',
+            title: `📞 Contacter ${name}`,
+            notes: done ? 'Contacté ✓' : 'Écrire ou appeler',
+            color: CONTACT_COLOR,
+            done,
+          })
+        }
+      }
+    }
+  }
+  return out
 }
 
 export default function Agenda() {
   const [events, setEvents] = useState([])
   const [tasks, setTasks] = useState([])
+  const [contacts, setContacts] = useState([])
+  const [show, setShow] = useState({ event: true, task: true, birthday: true, contact: true })
   const [error, setError] = useState('')
   const [view, setView] = useState('liste')
   const todayISO = toISO(new Date())
@@ -73,13 +152,16 @@ export default function Agenda() {
 
   const loadEvents = () => api.get('/events').then(setEvents).catch((e) => setError(e.message))
   const loadTasks = () => api.get('/tasks').then(setTasks).catch((e) => setError(e.message))
+  const loadContacts = () => api.get('/contacts').then(setContacts).catch((e) => setError(e.message))
 
   useEffect(() => {
     loadEvents()
     loadTasks()
+    loadContacts()
   }, [])
 
-  // Événements + échéances de la To-Do (lecture seule), dans une même liste.
+  // Événements + échéances To-Do + anniversaires + rappels de contact (lecture seule
+  // pour tout sauf les événements), dans une même liste.
   const items = useMemo(() => {
     const fromEvents = events.map((e) => ({
       kind: 'event',
@@ -104,10 +186,43 @@ export default function Agenda() {
         notes: null,
         color: TASK_COLOR,
       }))
-    return [...fromEvents, ...fromTasks].sort(compareItems)
-  }, [events, tasks])
+    const thisYear = new Date().getFullYear()
+    const firstYear = Math.min(cursor.year, thisYear) - 1
+    const lastYear = Math.max(cursor.year, thisYear) + 1
+    const years = []
+    for (let y = firstYear; y <= lastYear; y++) years.push(y)
+    const fromContacts = contactItems(contacts, years)
 
-  const upcoming = useMemo(() => items.filter((i) => i.date >= todayISO), [items, todayISO])
+    return [...fromEvents, ...fromTasks, ...fromContacts]
+      .filter((i) => show[i.kind])
+      .sort(compareItems)
+  }, [events, tasks, contacts, cursor.year, show])
+
+  // Anniversaires et rappels sont calculés à l'infini : on les limite à 12 mois à venir.
+  const upcoming = useMemo(() => {
+    const horizon = new Date()
+    horizon.setFullYear(horizon.getFullYear() + 1)
+    const horizonISO = toISO(horizon)
+    return items.filter(
+      (i) => i.date >= todayISO && (i.kind === 'event' || i.kind === 'task' || i.date <= horizonISO)
+    )
+  }, [items, todayISO])
+
+  // Rappels de contact passés et pas encore cochés : un seul par personne (le plus récent).
+  const overdue = useMemo(() => {
+    const latest = new Map()
+    for (const i of items) {
+      if (i.kind !== 'contact' || i.done || i.date >= todayISO) continue
+      const prev = latest.get(i.contactId)
+      if (!prev || i.date > prev.date) latest.set(i.contactId, i)
+    }
+    return [...latest.values()]
+      .map((i) => ({
+        ...i,
+        notes: `Prévu le ${fromISO(i.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} · écrire ou appeler`,
+      }))
+      .sort(compareItems)
+  }, [items, todayISO])
 
   const next30Count = useMemo(
     () => upcoming.filter((i) => daysFromToday(i.date) <= 30).length,
@@ -232,12 +347,16 @@ export default function Agenda() {
           <span className="agenda-item-title">{item.title}</span>
           {item.notes && <span className="agenda-item-notes">{item.notes}</span>}
         </span>
-        {item.kind === 'task' && <span className="agenda-item-tag">To-Do</span>}
+        {item.kind !== 'event' && <span className="agenda-item-tag">{KIND_TAG[item.kind]}</span>}
       </>
     )
-    if (item.kind === 'task') {
+    if (item.kind !== 'event') {
       return (
-        <Link className="agenda-item task" key={item.key} to="/todo">
+        <Link
+          className={`agenda-item linked${item.done ? ' done' : ''}`}
+          key={item.key}
+          to={item.kind === 'task' ? '/todo' : '/repertoire'}
+        >
           {body}
         </Link>
       )
@@ -256,9 +375,9 @@ export default function Agenda() {
       <PageHeader
         kicker={`${events.length} événements · Agenda`}
         title="Mon agenda."
-        description="Ce qui est prévu dans les jours et les mois à venir, avec les échéances de ta to-do."
-        statNumber={next30Count}
-        statLabel="à venir · 30 jours"
+        description="Ce qui est prévu dans les jours et les mois à venir : tes événements, les échéances de ta to-do, les anniversaires et les personnes à contacter."
+        statNumber={next30Count + overdue.length}
+        statLabel="à traiter · 30 jours"
       />
 
       <hr className="page-rule" />
@@ -273,6 +392,21 @@ export default function Agenda() {
           </button>
         </div>
         <button type="button" onClick={() => openNew()}>+ Événement</button>
+      </div>
+
+      <div className="agenda-filters">
+        {FILTERS.map((f) => (
+          <button
+            key={f.kind}
+            type="button"
+            className={`agenda-filter${show[f.kind] ? ' on' : ''}`}
+            onClick={() => setShow((s) => ({ ...s, [f.kind]: !s[f.kind] }))}
+            aria-pressed={show[f.kind]}
+          >
+            <span className="agenda-filter-dot" style={{ background: f.color }} />
+            {f.label}
+          </button>
+        ))}
       </div>
 
       {error && <p className="error">{error}</p>}
@@ -360,8 +494,17 @@ export default function Agenda() {
 
       {view === 'liste' && (
         <div className="agenda-list">
-          {upcomingGroups.length === 0 && (
+          {upcomingGroups.length === 0 && overdue.length === 0 && (
             <p className="home-empty">Rien de prévu pour l'instant. Ajoute un événement avec « + Événement ».</p>
+          )}
+          {overdue.length > 0 && (
+            <div className="agenda-day overdue">
+              <div className="agenda-day-heading">
+                <span className="agenda-day-label">En retard</span>
+                <span className="agenda-day-relative">{overdue.length} à contacter</span>
+              </div>
+              <div className="agenda-day-items">{overdue.map(renderItem)}</div>
+            </div>
           )}
           {upcomingGroups.map((group) => {
             const { label, relative } = dayHeading(group.date)
