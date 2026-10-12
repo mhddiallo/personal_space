@@ -17,8 +17,15 @@ def _clean_weekdays(weekdays: list[int]) -> list[int]:
 
 
 def _set_weekdays(rule: models.DisciplineRule, weekdays: list[int]) -> None:
-    rule.weekday_rows.clear()
-    for w in _clean_weekdays(weekdays):
+    # On ne touche qu'aux jours qui changent : supprimer puis recréer les mêmes lignes
+    # violerait la contrainte d'unicité (SQLAlchemy insère avant de supprimer).
+    wanted = set(_clean_weekdays(weekdays))
+    for row in list(rule.weekday_rows):
+        if row.weekday in wanted:
+            wanted.discard(row.weekday)
+        else:
+            rule.weekday_rows.remove(row)
+    for w in sorted(wanted):
         rule.weekday_rows.append(models.RuleWeekday(weekday=w))
 
 

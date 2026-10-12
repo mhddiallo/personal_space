@@ -64,6 +64,20 @@ export default function Semaine() {
     loadRules()
   }, [])
 
+  // Le pop-up de règle se ferme avec Échap.
+  useEffect(() => {
+    if (!showRuleForm) return undefined
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setShowRuleForm(false)
+        setEditingRuleId(null)
+        setRuleForm(emptyRuleForm)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [showRuleForm])
+
   useEffect(() => {
     setEditingDay(null)
     loadWeek()
@@ -138,7 +152,6 @@ export default function Semaine() {
     setEditingRuleId(null)
     setRuleForm(emptyRuleForm)
     setShowRuleForm(true)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const openEditRule = (rule) => {
@@ -154,7 +167,6 @@ export default function Semaine() {
       weekdays: rule.weekdays,
     })
     setShowRuleForm(true)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const closeRuleForm = () => {
@@ -279,9 +291,10 @@ export default function Semaine() {
       {error && <p className="error">{error}</p>}
 
       {showRuleForm && (
-        <div className="vocab-panel">
-          <button className="vocab-panel-close" type="button" onClick={closeRuleForm}>✕</button>
-          <div className="vocab-panel-title">{editingRuleId ? 'Modifier la règle' : 'Nouvelle règle'}</div>
+        <div className="modal-backdrop" onClick={closeRuleForm}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+          <button className="modal-close" type="button" onClick={closeRuleForm} aria-label="Fermer">✕</button>
+          <div className="modal-title">{editingRuleId ? 'Modifier la règle' : 'Nouvelle règle'}</div>
           <form onSubmit={submitRule}>
             <div className="modal-fields-inline">
               <div>
@@ -392,6 +405,7 @@ export default function Semaine() {
               )}
             </div>
           </form>
+          </div>
         </div>
       )}
 
