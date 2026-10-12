@@ -334,3 +334,82 @@ class Event(Base):
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     color: Mapped[str] = mapped_column(String(20), nullable=False, default="#5c7f9c")
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utcnow)
+
+
+# ---------- Ma semaine (règles de discipline) ----------
+
+
+class DisciplineRule(Base):
+    __tablename__ = "discipline_rules"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    # interdit | limite | creneau | a_faire
+    kind: Mapped[str] = mapped_column(String(20), nullable=False, default="a_faire")
+    icon: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    start_time: Mapped[str | None] = mapped_column(String(5), nullable=True)  # "HH:MM"
+    end_time: Mapped[str | None] = mapped_column(String(5), nullable=True)  # "HH:MM"
+    time_label: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utcnow)
+
+    weekday_rows: Mapped[list["RuleWeekday"]] = relationship(
+        back_populates="rule", cascade="all, delete-orphan"
+    )
+    override_rows: Mapped[list["RuleOverride"]] = relationship(
+        back_populates="rule", cascade="all, delete-orphan"
+    )
+    check_rows: Mapped[list["RuleCheck"]] = relationship(
+        back_populates="rule", cascade="all, delete-orphan"
+    )
+
+    @property
+    def weekdays(self) -> list[int]:
+        return sorted(row.weekday for row in self.weekday_rows)
+
+
+class RuleWeekday(Base):
+    """Semaine type : la règle s'applique chaque semaine à ces jours (0=lundi ... 6=dimanche)."""
+
+    __tablename__ = "discipline_rule_weekdays"
+    __table_args__ = (UniqueConstraint("rule_id", "weekday", name="uq_rule_weekday"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    rule_id: Mapped[int] = mapped_column(
+        ForeignKey("discipline_rules.id", ondelete="CASCADE"), nullable=False
+    )
+    weekday: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    rule: Mapped["DisciplineRule"] = relationship(back_populates="weekday_rows")
+
+
+class RuleOverride(Base):
+    """Exception pour une date précise : ajouter ou retirer une règle par rapport à la semaine type."""
+
+    __tablename__ = "discipline_rule_overrides"
+    __table_args__ = (UniqueConstraint("rule_id", "date", name="uq_rule_override_date"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    rule_id: Mapped[int] = mapped_column(
+        ForeignKey("discipline_rules.id", ondelete="CASCADE"), nullable=False
+    )
+    date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
+    action: Mapped[str] = mapped_column(String(10), nullable=False)  # add | remove
+
+    rule: Mapped["DisciplineRule"] = relationship(back_populates="override_rows")
+
+
+class RuleCheck(Base):
+    """Règle tenue ce jour-là (une ligne = case cochée)."""
+
+    __tablename__ = "discipline_rule_checks"
+    __table_args__ = (UniqueConstraint("rule_id", "date", name="uq_rule_check_date"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    rule_id: Mapped[int] = mapped_column(
+        ForeignKey("discipline_rules.id", ondelete="CASCADE"), nullable=False
+    )
+    date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
+
+    rule: Mapped["DisciplineRule"] = relationship(back_populates="check_rows")

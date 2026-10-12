@@ -3565,3 +3565,374 @@ button.danger {
 .agenda-day.overdue .agenda-item {
   border-color: var(--border);
 }
+
+
+/* ================================================================
+   Ma semaine (discipline)
+   ================================================================ */
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.week-nav-label {
+  flex: 1;
+  text-align: center;
+  font-size: 1.35rem;
+}
+
+.semaine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.week-day {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem;
+}
+
+.week-day.today {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.week-day.past:not(.today) {
+  background: var(--card-alt);
+}
+
+.week-day-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.week-day-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  line-height: 1.1;
+}
+
+.week-day-date {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.week-today-tag {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-radius: var(--radius-pill);
+  padding: 0.05rem 0.5rem;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.week-edit-btn {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.8rem;
+}
+
+.week-day-empty {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+}
+
+.week-rule {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.week-rule-check {
+  display: flex;
+  padding-top: 0.1rem;
+}
+
+.week-rule-check input {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.week-rule-check input:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.week-rule-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.week-rule-title {
+  display: flex;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.week-rule-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.6rem;
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.week-rule-kind {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.week-rule-note {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: pre-line;
+}
+
+.week-rule.done .week-rule-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.week-rule.done {
+  opacity: 0.7;
+}
+
+.week-rule.missed .week-rule-title::after {
+  content: 'non tenu';
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-pill);
+  padding: 0 0.4rem;
+  align-self: center;
+}
+
+.week-edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 0.6rem;
+}
+
+.week-edit-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.week-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.week-edit-row input {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.week-edit-time {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-faint);
+  text-align: right;
+}
+
+.week-edit-list > button {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.week-empty {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.week-empty ul {
+  margin: 0.75rem 0 1rem;
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.week-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.week-presets button {
+  font-size: 0.74rem;
+  padding: 0.3rem 0.7rem;
+}
+
+/* Liste des règles */
+
+.week-rules-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.75rem;
+}
+
+.week-rule-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+}
+
+.week-rule-card:hover {
+  border-color: var(--text-faint);
+}
+
+.week-rule-days {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.week-day-pill {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-faint);
+}
+
+.week-day-pill.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* Accueil : « Aujourd'hui, je m'engage à » */
+
+.commitments-panel {
+  margin-bottom: 1rem;
+}
+
+.commitments-progress {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.commitments-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.25rem 1.5rem;
+}
+
+.commitment {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--border-soft);
+  cursor: pointer;
+}
+
+.commitment input {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.commitment-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.commitment-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.commitment-meta {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.commitment-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: pre-line;
+}
+
+.commitment.done .commitment-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.commitment.done {
+  opacity: 0.7;
+}
+
+@media (max-width: 640px) {
+  .semaine-grid,
+  .week-rules-list,
+  .commitments-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .week-nav-label {
+    font-size: 1.1rem;
+  }
+
+  .week-day {
+    padding: 0.95rem;
+  }
+}

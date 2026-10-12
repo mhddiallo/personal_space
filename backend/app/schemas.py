@@ -1,4 +1,5 @@
 import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -483,3 +484,66 @@ class EventOut(EventBase):
 
     id: int
     created_at: datetime.datetime
+
+
+# ---------- Ma semaine ----------
+
+
+class RuleBase(BaseModel):
+    title: str
+    kind: Literal["interdit", "limite", "creneau", "a_faire"] = "a_faire"
+    icon: str | None = None
+    start_time: str | None = Field(default=None, pattern=TIME_PATTERN)
+    end_time: str | None = Field(default=None, pattern=TIME_PATTERN)
+    time_label: str | None = None
+    note: str | None = None
+
+
+class RuleCreate(RuleBase):
+    weekdays: list[int] = []
+
+
+class RuleUpdate(BaseModel):
+    title: str | None = None
+    kind: Literal["interdit", "limite", "creneau", "a_faire"] | None = None
+    icon: str | None = None
+    start_time: str | None = Field(default=None, pattern=TIME_PATTERN)
+    end_time: str | None = Field(default=None, pattern=TIME_PATTERN)
+    time_label: str | None = None
+    note: str | None = None
+    weekdays: list[int] | None = None
+
+
+class RuleOut(RuleBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    position: int
+    weekdays: list[int]
+
+
+class RuleOverrideSet(BaseModel):
+    rule_id: int
+    date: datetime.date
+    action: Literal["add", "remove"]
+
+
+class RuleOverrideOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    rule_id: int
+    date: datetime.date
+    action: str
+
+
+class RuleCheckSet(BaseModel):
+    rule_id: int
+    date: datetime.date
+    done: bool
+
+
+class RuleCheckOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    rule_id: int
+    date: datetime.date

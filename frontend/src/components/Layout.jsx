@@ -16,17 +16,18 @@ const GROUPS = [
       { to: '/calendrier', label: '168 Heures', icon: '🗓️', badge: 4 },
       { to: '/blueprint', label: 'Blueprint', icon: '🧭', badge: 5 },
       { to: '/agenda', label: 'Agenda', icon: '📅', badge: 6 },
+      { to: '/semaine', label: 'Ma semaine', icon: '🛡️', badge: 7 },
     ],
   },
   {
     label: 'Vie',
     items: [
-      { to: '/finances', label: 'Finances', icon: '💰', badge: 7 },
-      { to: '/journal', label: 'Journal', icon: '📔', badge: 8 },
-      { to: '/vocabulaire', label: 'Vocabulaire', icon: '🔤', badge: 9 },
-      { to: '/lecture', label: 'Lecture', icon: '📚', badge: 10 },
-      { to: '/nourriture', label: 'Nourriture', icon: '🍽️', badge: 11 },
-      { to: '/repertoire', label: 'Répertoire', icon: '👥', badge: 12 },
+      { to: '/finances', label: 'Finances', icon: '💰', badge: 8 },
+      { to: '/journal', label: 'Journal', icon: '📔', badge: 9 },
+      { to: '/vocabulaire', label: 'Vocabulaire', icon: '🔤', badge: 10 },
+      { to: '/lecture', label: 'Lecture', icon: '📚', badge: 11 },
+      { to: '/nourriture', label: 'Nourriture', icon: '🍽️', badge: 12 },
+      { to: '/repertoire', label: 'Répertoire', icon: '👥', badge: 13 },
     ],
   },
 ]
@@ -34,7 +35,7 @@ const GROUPS = [
 const ALL_ITEMS = GROUPS.flatMap((g) => g.items)
 
 // Pages les plus utilisées, épinglées dans la barre du bas sur téléphone.
-const PRIMARY_PATHS = ['/', '/objectifs', '/todo', '/journal']
+const PRIMARY_PATHS = ['/', '/semaine', '/todo', '/journal']
 const PRIMARY_ITEMS = PRIMARY_PATHS.map((to) => ALL_ITEMS.find((i) => i.to === to))
 
 function NavGroups() {
