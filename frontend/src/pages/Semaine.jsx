@@ -467,6 +467,7 @@ export default function Semaine() {
                     </button>
                   </div>
 
+                  <div className="week-day-body">
                   {!editing && dayRules.length === 0 && <p className="week-day-empty">Aucune règle ce jour-là.</p>}
                   {!editing && dayRules.map((rule) => renderRuleRow(rule, day))}
 
@@ -491,6 +492,7 @@ export default function Semaine() {
                       )}
                     </div>
                   )}
+                  </div>
                 </div>
               )
             })}

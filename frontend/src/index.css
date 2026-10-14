@@ -3597,6 +3597,24 @@ button.danger {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.1rem;
+  /* Toutes les cartes ont la même hauteur ; la liste défile à l'intérieur. */
+  display: flex;
+  flex-direction: column;
+  height: clamp(26rem, 82vh, 46rem);
+}
+
+.week-day-header {
+  flex-shrink: 0;
+}
+
+.week-day-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin-right: -0.5rem;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
 .week-day.today {
@@ -3933,7 +3951,15 @@ button.danger {
     font-size: 1.1rem;
   }
 
+  /* Sur téléphone, les cartes sont empilées : pas de défilement imbriqué. */
   .week-day {
     padding: 0.95rem;
+    height: auto;
+  }
+
+  .week-day-body {
+    overflow: visible;
+    margin-right: 0;
+    padding-right: 0;
   }
 }
