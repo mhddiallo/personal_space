@@ -3963,3 +3963,313 @@ button.danger {
     padding-right: 0;
   }
 }
+
+
+/* ================================================================
+   Secteurs de vie
+   ================================================================ */
+
+.sec-notice {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--danger);
+  min-height: 1.2em;
+}
+
+.sec-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sec-panel,
+.sec-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.sec-panel-header,
+.sec-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.sec-panel-header h2,
+.sec-card-header h3 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.sec-panel-header h2 {
+  font-size: 1.6rem;
+}
+
+.sec-card-header h3 {
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.sec-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sec-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.sec-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.sec-edit-btn {
+  font-size: 0.72rem;
+  padding: 0.3rem 0.7rem;
+}
+
+.sec-desc,
+.sec-hint,
+.sec-empty {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.sec-empty {
+  padding: 0.3rem 0;
+}
+
+.sec-warn {
+  font-size: 0.82rem;
+  color: var(--danger);
+}
+
+.sec-bar {
+  height: 4px;
+  background: var(--border-soft);
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sec-bar i {
+  display: block;
+  height: 100%;
+  transition: width 0.25s;
+}
+
+.sec-panel ul,
+.sec-card ul,
+.priorities-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sec-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.sec-row:first-child {
+  border-top: none;
+}
+
+.sec-row input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  margin: 0.1rem 0 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.sec-row-text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  cursor: default;
+}
+
+.sec-row input[type='checkbox'] + .sec-row-text {
+  cursor: pointer;
+}
+
+.sec-row.done .sec-row-text {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.sec-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.sec-icon-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text-faint);
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0.2rem 0.45rem;
+  flex-shrink: 0;
+}
+
+.sec-icon-btn:hover {
+  border-color: var(--border);
+  color: var(--text);
+  opacity: 1;
+}
+
+.sec-icon-btn.on {
+  color: var(--mood-ambre);
+  background: var(--card-alt);
+}
+
+.sec-pill {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.7rem;
+  flex-shrink: 0;
+}
+
+.sec-pill.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.sec-row select {
+  max-width: 150px;
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card-alt);
+  color: var(--text);
+}
+
+.sec-add {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.sec-add input[type='text'] {
+  flex: 1 1 150px;
+  min-width: 0;
+  font: inherit;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-alt);
+  color: var(--text);
+}
+
+.sec-add button {
+  font-size: 0.82rem;
+  padding: 0.5rem 1rem;
+}
+
+.sec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Toutes les cartes ont la même hauteur ; la liste défile à l'intérieur. */
+.sec-card {
+  height: clamp(24rem, 72vh, 36rem);
+}
+
+.sec-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin-right: -0.4rem;
+  padding-right: 0.4rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.priorities-panel {
+  margin-bottom: 1rem;
+}
+
+.priorities-panel .sec-add {
+  margin: 0.6rem 0 0.4rem;
+}
+
+.priorities-list {
+  margin-top: 0.6rem;
+}
+
+@media (max-width: 800px) {
+  .sec-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .sec-panel,
+  .sec-card {
+    padding: 1rem;
+  }
+
+  /* Cartes empilées : pas de défilement imbriqué sur téléphone. */
+  .sec-card {
+    height: auto;
+  }
+
+  .sec-card-body {
+    overflow: visible;
+    margin-right: 0;
+    padding-right: 0;
+  }
+
+  .sec-row select {
+    max-width: 120px;
+  }
+}

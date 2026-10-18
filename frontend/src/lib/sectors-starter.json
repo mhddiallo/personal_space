@@ -1,0 +1,93 @@
+{
+  "sectors": [
+    {
+      "name": "Travail BCEAO",
+      "description": "UAP, APETI, AJUR.",
+      "color": "#5c7f9c",
+      "items": [
+        { "title": "UAP : définir la prochaine étape" },
+        { "title": "APETI : définir la prochaine étape" },
+        { "title": "AJUR : scripts SQL à finaliser" }
+      ]
+    },
+    {
+      "name": "Carrière et formation",
+      "description": "Transition vers les institutions internationales, PMP, Coursera.",
+      "color": "#6f8f6a",
+      "items": [
+        { "title": "Choisir la prochaine action pour la transition (YPP, ITD, Chevening)" },
+        { "title": "PMP : planifier deux séances d'étude" },
+        { "title": "Business Analyst IA (Coursera) : un module cette semaine" }
+      ]
+    },
+    {
+      "name": "Projets perso",
+      "description": "Deux projets actifs au maximum. Les autres restent en pause, sans culpabilité.",
+      "color": "#c17a4a",
+      "items": [
+        { "title": "Choisir les 2 projets à activer" },
+        { "title": "KërGestion", "kind": "project", "active": false },
+        { "title": "Kër Déco", "kind": "project", "active": false },
+        { "title": "Kër Ravito", "kind": "project", "active": true },
+        { "title": "SunuCourse", "kind": "project", "active": false },
+        { "title": "Balise", "kind": "project", "active": false },
+        { "title": "Absa", "kind": "project", "active": false },
+        { "title": "Mon-Afrique", "kind": "project", "active": false },
+        { "title": "Projet agricole", "kind": "project", "active": false }
+      ]
+    },
+    {
+      "name": "Finances",
+      "description": "Budget, suivi, pistes d'investissement.",
+      "color": "#cf9a55",
+      "items": [
+        { "title": "Revoir le budget du mois" },
+        { "title": "Mettre à jour le suivi des dépenses" }
+      ]
+    },
+    {
+      "name": "Famille et proches",
+      "description": "Épouse, sœur, neveu, amis, visites.",
+      "color": "#b5482f",
+      "items": [
+        { "title": "Faire la liste des personnes à aller voir", "done": true },
+        { "title": "Rendre visite à Tonton Yaya", "done": true },
+        { "title": "Rendre visite à Tonton Ass" },
+        { "title": "Rendre visite à Tonton Ardo Dia" },
+        { "title": "Fixer une date pour chaque visite" },
+        { "title": "Appeler ton neveu en France" },
+        { "title": "Prendre des nouvelles de Julia" }
+      ]
+    },
+    {
+      "name": "Vie civique",
+      "description": "Conseil de quartier des Mamelles, Commission Cadre de Vie.",
+      "color": "#8bbdb8",
+      "items": [
+        { "title": "Conseil de quartier : préparer la prochaine réunion" },
+        { "title": "Projet pilote d'identité numérique : prochain pas" }
+      ]
+    },
+    {
+      "name": "Spiritualité et bien-être",
+      "description": "Pratique religieuse, routines de bien-être.",
+      "color": "#ab9bc9",
+      "items": [
+        { "title": "Bloquer un créneau de calme chaque jour" },
+        { "title": "Garder ta routine de bien-être cette semaine" }
+      ]
+    },
+    {
+      "name": "Admin et maison",
+      "description": "Tri des habits : pas porté depuis un an, on donne. Garder l'essentiel.",
+      "color": "#9c8ba0",
+      "items": [
+        { "title": "Habits : tout sortir de l'armoire" },
+        { "title": "Habits : trier en 3 piles (garder, donner, jeter)" },
+        { "title": "Donner ou jeter ce qui sort, le jour même" },
+        { "title": "Ne ranger que l'essentiel" },
+        { "title": "Classer les papiers et les reçus" }
+      ]
+    }
+  ]
+}

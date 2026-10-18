@@ -17,6 +17,7 @@ from app.routers import (
     food,
     goals,
     journal,
+    sectors,
     todo,
     vocabulary,
 )
@@ -56,6 +57,7 @@ app.include_router(books.router, dependencies=protected)
 app.include_router(food.router, dependencies=protected)
 app.include_router(events.router, dependencies=protected)
 app.include_router(discipline.router, dependencies=protected)
+app.include_router(sectors.router, dependencies=protected)
 
 
 @app.get("/api/health")

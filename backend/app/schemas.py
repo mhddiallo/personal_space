@@ -547,3 +547,84 @@ class RuleCheckOut(BaseModel):
 
     rule_id: int
     date: datetime.date
+
+
+# ---------- Secteurs de vie ----------
+
+MAX_FOCUS_PER_SECTOR = 3
+
+
+class SectorItemCreate(BaseModel):
+    title: str
+    kind: Literal["task", "project"] = "task"
+    done: bool = False
+    focus: bool = False
+    active: bool = False
+
+
+class SectorItemUpdate(BaseModel):
+    title: str | None = None
+    done: bool | None = None
+    focus: bool | None = None
+    active: bool | None = None
+    sector_id: int | None = None
+
+
+class SectorItemOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    sector_id: int
+    title: str
+    kind: str
+    done: bool
+    focus: bool
+    active: bool
+    position: int
+
+
+class SectorCreate(BaseModel):
+    name: str
+    description: str | None = None
+    color: str = "#5c7f9c"
+
+
+class SectorUpdate(BaseModel):
+    name: str | None = None
+    description: str | None = None
+    color: str | None = None
+
+
+class SectorOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    description: str | None = None
+    color: str
+    position: int
+    items: list[SectorItemOut] = []
+
+
+class SectorBulkSector(SectorCreate):
+    items: list[SectorItemCreate] = []
+
+
+class SectorBulk(BaseModel):
+    sectors: list[SectorBulkSector]
+
+
+class InboxCreate(BaseModel):
+    title: str
+
+
+class InboxOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    title: str
+    created_at: datetime.datetime
+
+
+class InboxMove(BaseModel):
+    sector_id: int

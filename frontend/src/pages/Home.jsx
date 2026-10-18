@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import TodayCommitments from '../components/TodayCommitments'
+import PrioritiesPanel from '../components/PrioritiesPanel'
 
 const MONTHS = [
   'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
@@ -207,6 +208,8 @@ export default function Home() {
       </div>
 
       <TodayCommitments />
+
+      <PrioritiesPanel />
 
       <div className="home-grid">
         <div className="home-panel">

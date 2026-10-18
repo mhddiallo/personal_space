@@ -413,3 +413,51 @@ class RuleCheck(Base):
     date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
 
     rule: Mapped["DisciplineRule"] = relationship(back_populates="check_rows")
+
+
+# ---------- Secteurs de vie ----------
+
+
+class Sector(Base):
+    __tablename__ = "sectors"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    color: Mapped[str] = mapped_column(String(20), nullable=False, default="#5c7f9c")
+    position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utcnow)
+
+    items: Mapped[list["SectorItem"]] = relationship(
+        back_populates="sector", cascade="all, delete-orphan", order_by="SectorItem.position"
+    )
+
+
+class SectorItem(Base):
+    """Une tâche ou un projet rangé dans un secteur. focus = priorité de la semaine."""
+
+    __tablename__ = "sector_items"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    sector_id: Mapped[int] = mapped_column(
+        ForeignKey("sectors.id", ondelete="CASCADE"), nullable=False
+    )
+    title: Mapped[str] = mapped_column(String(500), nullable=False)
+    kind: Mapped[str] = mapped_column(String(10), nullable=False, default="task")  # task | project
+    done: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    focus: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)  # projets
+    position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utcnow)
+
+    sector: Mapped["Sector"] = relationship(back_populates="items")
+
+
+class InboxItem(Base):
+    """Boîte d'entrée : tout ce qui passe par la tête, rangé plus tard dans un secteur."""
+
+    __tablename__ = "inbox_items"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str] = mapped_column(String(500), nullable=False)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utcnow)

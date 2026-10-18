@@ -8,26 +8,27 @@ const GROUPS = [
       { to: '/', label: 'Accueil', icon: '🏠', end: true, badge: 1 },
       { to: '/objectifs', label: 'Objectifs', icon: '🎯', badge: 2 },
       { to: '/todo', label: 'To-Do', icon: '✅', badge: 3 },
+      { to: '/secteurs', label: 'Secteurs', icon: '🧩', badge: 4 },
     ],
   },
   {
     label: 'Temps',
     items: [
-      { to: '/calendrier', label: '168 Heures', icon: '🗓️', badge: 4 },
-      { to: '/blueprint', label: 'Blueprint', icon: '🧭', badge: 5 },
-      { to: '/agenda', label: 'Agenda', icon: '📅', badge: 6 },
-      { to: '/semaine', label: 'Ma semaine', icon: '🛡️', badge: 7 },
+      { to: '/calendrier', label: '168 Heures', icon: '🗓️', badge: 5 },
+      { to: '/blueprint', label: 'Blueprint', icon: '🧭', badge: 6 },
+      { to: '/agenda', label: 'Agenda', icon: '📅', badge: 7 },
+      { to: '/semaine', label: 'Ma semaine', icon: '🛡️', badge: 8 },
     ],
   },
   {
     label: 'Vie',
     items: [
-      { to: '/finances', label: 'Finances', icon: '💰', badge: 8 },
-      { to: '/journal', label: 'Journal', icon: '📔', badge: 9 },
-      { to: '/vocabulaire', label: 'Vocabulaire', icon: '🔤', badge: 10 },
-      { to: '/lecture', label: 'Lecture', icon: '📚', badge: 11 },
-      { to: '/nourriture', label: 'Nourriture', icon: '🍽️', badge: 12 },
-      { to: '/repertoire', label: 'Répertoire', icon: '👥', badge: 13 },
+      { to: '/finances', label: 'Finances', icon: '💰', badge: 9 },
+      { to: '/journal', label: 'Journal', icon: '📔', badge: 10 },
+      { to: '/vocabulaire', label: 'Vocabulaire', icon: '🔤', badge: 11 },
+      { to: '/lecture', label: 'Lecture', icon: '📚', badge: 12 },
+      { to: '/nourriture', label: 'Nourriture', icon: '🍽️', badge: 13 },
+      { to: '/repertoire', label: 'Répertoire', icon: '👥', badge: 14 },
     ],
   },
 ]
@@ -35,7 +36,7 @@ const GROUPS = [
 const ALL_ITEMS = GROUPS.flatMap((g) => g.items)
 
 // Pages les plus utilisées, épinglées dans la barre du bas sur téléphone.
-const PRIMARY_PATHS = ['/', '/semaine', '/todo', '/journal']
+const PRIMARY_PATHS = ['/', '/secteurs', '/semaine', '/todo']
 const PRIMARY_ITEMS = PRIMARY_PATHS.map((to) => ALL_ITEMS.find((i) => i.to === to))
 
 function NavGroups() {

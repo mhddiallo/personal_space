@@ -14,6 +14,7 @@ import Lecture from './pages/Lecture'
 import Nourriture from './pages/Nourriture'
 import Agenda from './pages/Agenda'
 import Semaine from './pages/Semaine'
+import Secteurs from './pages/Secteurs'
 import Login from './pages/Login'
 import { authToken } from './api/client'
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/nourriture" element={<Nourriture />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/semaine" element={<Semaine />} />
+        <Route path="/secteurs" element={<Secteurs />} />
         <Route path="/calendrier" element={<Calendar168 />} />
         <Route path="/blueprint" element={<Blueprint />} />
         <Route
