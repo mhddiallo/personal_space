@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import TodayCommitments from '../components/TodayCommitments'
 import PrioritiesPanel from '../components/PrioritiesPanel'
+import DuasShortcut from '../components/DuasShortcut'
 
 const MONTHS = [
   'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
@@ -206,6 +207,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <DuasShortcut />
 
       <TodayCommitments />
 

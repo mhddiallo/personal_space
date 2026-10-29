@@ -12,6 +12,7 @@ from app.routers import (
     calendar,
     contacts,
     discipline,
+    duas,
     events,
     finances,
     food,
@@ -58,6 +59,7 @@ app.include_router(food.router, dependencies=protected)
 app.include_router(events.router, dependencies=protected)
 app.include_router(discipline.router, dependencies=protected)
 app.include_router(sectors.router, dependencies=protected)
+app.include_router(duas.router, dependencies=protected)
 
 
 @app.get("/api/health")

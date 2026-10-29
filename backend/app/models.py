@@ -461,3 +461,19 @@ class InboxItem(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(500), nullable=False)
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utcnow)
+
+# ---------- Prières (duas à lire après la salat) ----------
+
+
+class Dua(Base):
+    __tablename__ = "duas"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    arabic: Mapped[str] = mapped_column(Text, nullable=False)
+    transliteration: Mapped[str | None] = mapped_column(Text, nullable=True)
+    translation: Mapped[str | None] = mapped_column(Text, nullable=True)
+    source: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    repetitions: Mapped[str | None] = mapped_column(String(50), nullable=True)  # ex. "3 fois"
+    position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utcnow)

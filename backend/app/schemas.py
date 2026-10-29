@@ -628,3 +628,38 @@ class InboxOut(BaseModel):
 
 class InboxMove(BaseModel):
     sector_id: int
+
+# ---------- Prières (duas) ----------
+
+
+class DuaBase(BaseModel):
+    title: str = Field(min_length=1)
+    arabic: str = Field(min_length=1)
+    transliteration: str | None = None
+    translation: str | None = None
+    source: str | None = None
+    repetitions: str | None = None
+
+
+class DuaCreate(DuaBase):
+    pass
+
+
+class DuaUpdate(BaseModel):
+    title: str | None = Field(default=None, min_length=1)
+    arabic: str | None = Field(default=None, min_length=1)
+    transliteration: str | None = None
+    translation: str | None = None
+    source: str | None = None
+    repetitions: str | None = None
+
+
+class DuaOut(DuaBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    position: int
+
+
+class DuaReorder(BaseModel):
+    ids: list[int]

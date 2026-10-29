@@ -23,12 +23,13 @@ const GROUPS = [
   {
     label: 'Vie',
     items: [
-      { to: '/finances', label: 'Finances', icon: '💰', badge: 9 },
-      { to: '/journal', label: 'Journal', icon: '📔', badge: 10 },
-      { to: '/vocabulaire', label: 'Vocabulaire', icon: '🔤', badge: 11 },
-      { to: '/lecture', label: 'Lecture', icon: '📚', badge: 12 },
-      { to: '/nourriture', label: 'Nourriture', icon: '🍽️', badge: 13 },
-      { to: '/repertoire', label: 'Répertoire', icon: '👥', badge: 14 },
+      { to: '/prieres', label: 'Prières', icon: '🤲', badge: 9 },
+      { to: '/finances', label: 'Finances', icon: '💰', badge: 10 },
+      { to: '/journal', label: 'Journal', icon: '📔', badge: 11 },
+      { to: '/vocabulaire', label: 'Vocabulaire', icon: '🔤', badge: 12 },
+      { to: '/lecture', label: 'Lecture', icon: '📚', badge: 13 },
+      { to: '/nourriture', label: 'Nourriture', icon: '🍽️', badge: 14 },
+      { to: '/repertoire', label: 'Répertoire', icon: '👥', badge: 15 },
     ],
   },
 ]
