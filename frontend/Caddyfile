@@ -1,0 +1,19 @@
+# SITE_ADDRESS = ton domaine (ex: maison.exemple.com) -> HTTPS automatique.
+# Sans domaine : ":80" (accès en http://IP-du-serveur).
+{$SITE_ADDRESS::80} {
+	encode gzip
+
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+
+	handle /uploads/* {
+		reverse_proxy api:8000
+	}
+
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

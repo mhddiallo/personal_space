@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: maison
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Définis POSTGRES_PASSWORD dans .env}
+      POSTGRES_DB: maison
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U maison -d maison"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://maison:${POSTGRES_PASSWORD}@db:5432/maison
+      # Même origine que le site : pas besoin d'ouvrir le CORS à autre chose.
+      CORS_ORIGINS: ${PUBLIC_URL:-http://localhost}
+    volumes:
+      - uploads:/srv/uploads
+    expose:
+      - "8000"
+
+  web:
+    build: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  pgdata:
+  uploads:
+  caddy_data:
+  caddy_config:
